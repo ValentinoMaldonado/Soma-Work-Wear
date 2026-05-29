@@ -27,11 +27,36 @@ namespace CapaPresentacionAdmin
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.min.js"));
 
+            // DataTables scripts
+            bundles.Add(new ScriptBundle("~/bundles/datatables").Include(
+                "~/Scripts/DataTables/jquery.dataTables.min.js",
+                "~/Scripts/DataTables/dataTables.bootstrap4.min.js",
+                "~/Scripts/DataTables/dataTables.buttons.min.js",
+                "~/Scripts/DataTables/buttons.bootstrap4.min.js"
+            ));
+
+            // DataTables responsive (separate bundle as view requests it)
+            bundles.Add(new ScriptBundle("~/bundles/datatables.responsive").Include(
+                "~/Scripts/DataTables/dataTables.responsive.min.js",
+                "~/Scripts/DataTables/responsive.bootstrap4.min.js"
+            ));
+
             // Font Awesome CSS (uses files present under Content)
             bundles.Add(new StyleBundle("~/Content/fontawesome").Include(
                       "~/Content/fontawesome.min.css",
                       "~/Content/all.css"));
 
+            // DataTables CSS
+            bundles.Add(new StyleBundle("~/Content/datatables").Include(
+                "~/Content/DataTables/css/dataTables.bootstrap4.min.css",
+                "~/Content/DataTables/css/responsive.bootstrap4.min.css",
+                "~/Content/DataTables/css/buttons.bootstrap4.min.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/Content/bootstrap.css",
+                      "~/Content/site.css"));
+            
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

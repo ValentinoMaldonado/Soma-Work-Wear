@@ -1,7 +1,293 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Usuarios";
 }
 
-<h2>Usuarios</h2>
+<style>
+    /* Global aesthetic for Usuarios page matching layout theme */
+    .futuristic-card {
+        border-radius: 12px;
+        padding: 1rem;
+        background: linear-gradient(180deg, rgba(6,12,14,0.88), rgba(8,14,24,0.95));
+        border: 1px solid rgba(255,255,255,0.03);
+        box-shadow: 0 10px 40px rgba(3,7,18,0.8), inset 0 1px 0 rgba(255,255,255,0.02);
+        color: #dbefff;
+        backdrop-filter: blur(6px);
+    }
 
+    .futuristic-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .create-btn {
+        background: linear-gradient(90deg, rgba(23,163,163,0.12), rgba(16,120,180,0.12));
+        border: 1px solid rgba(30,150,140,0.12);
+        color: #dffef8;
+        padding: 0.55rem 0.9rem;
+        border-radius: 8px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+    .create-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(8,160,140,0.08); background: linear-gradient(90deg, rgba(23,163,163,0.18), rgba(16,120,180,0.18)); }
+
+    .futuristic-table thead th {
+        border: none;
+        background: rgba(255,255,255,0.02);
+        color: #9fc8ff;
+        font-weight: 600;
+        padding: 0.85rem 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        font-size: 0.82rem;
+    }
+
+    .futuristic-table tbody td {
+        padding: 0.9rem 1rem;
+        vertical-align: middle;
+        color: #e6f2ff;
+        border-top: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .futuristic-table tbody tr:hover td { background: rgba(255,255,255,0.02); }
+
+    .badge-yes { background: linear-gradient(90deg,#28a745,#20c997); color: #fff; box-shadow: 0 6px 18px rgba(32,201,151,0.12); border-radius: 999px; padding: 0.35rem 0.6rem; font-weight: 600; font-size: 0.85rem; }
+    .badge-no  { background: linear-gradient(90deg,#6c757d,#495057); color: #fff; border-radius: 999px; padding: 0.35rem 0.6rem; font-weight: 600; font-size: 0.85rem; }
+
+    .action-btn { background: rgba(255,255,255,0.03); border: none; padding: 0.45rem; border-radius: 8px; color: #e8fbf7; display:inline-flex; align-items:center; justify-content:center; }
+    .action-btn:hover { background: linear-gradient(90deg, rgba(16,160,140,0.12), rgba(20,90,150,0.06)); transform: translateY(-2px); }
+
+    .btn-edit { color: #ffffff; background: linear-gradient(90deg,#0ea5a3,#1fb884); box-shadow: 0 8px 26px rgba(30,190,160,0.08); }
+    .btn-delete{ color: #fff; background: linear-gradient(90deg,#dc3545,#b02a37); box-shadow: 0 8px 26px rgba(200,60,70,0.08); }
+
+    .page-title { font-size: 1.25rem; font-weight: 700; color: #eaf4ff; }
+
+    /* Modal custom look */
+    .modal-content {
+        background: linear-gradient(180deg, rgba(10,16,18,0.95), rgba(6,12,18,0.92));
+        color: #e8fbf7;
+        border: none;
+        border-radius: 10px;
+        box-shadow: 0 18px 60px rgba(3,7,18,0.85);
+    }
+    .modal-header { border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .modal-title { font-weight: 700; }
+    .form-control { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04); color: #e8fbf7; }
+    .form-control:focus { box-shadow: 0 6px 30px rgba(30,160,140,0.06); border-color: rgba(20,140,150,0.28); }
+
+    /* Icon sizes in the action column */
+    .actions-cell { width: 120px; text-align: left; }
+    .actions-cell .btn { margin-right: 6px; }
+
+    /* Small responsive tweaks */
+    @@media (max-width: 576px) {
+        .actions-cell { width: auto; }
+    }
+
+</style>
+
+<div class="container py-4">
+    <div class="futuristic-card">
+        <div class="futuristic-header">
+            <div>
+                <div class="page-title">Usuarios</div>
+                <small class="text-muted" style="color: #9fbff7;">Listado visual — datos cargados vía AJAX</small>
+            </div>
+
+            <div>
+                <button id="btnCrear" type="button" class="create-btn" data-bs-toggle="modal" data-bs-target="#modalUsuario">
+                    <i class="fas fa-plus-circle" style="color:var(--accent-1)"></i> Crear Nuevo
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <!-- Tabla DataTables: se llena por AJAX -->
+            <table id="tabla" class="table table-borderless futuristic-table mb-0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width:8%"></th>
+                        <th style="width:6%">ID</th>
+                        <th style="width:28%">Nombres</th>
+                        <th style="width:28%">Apellidos</th>
+                        <th style="width:26%">Correo</th>
+                        <th style="width:10%">Activo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- DataTables llenará las filas -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Crear / Editar Usuario (front only) -->
+<div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUsuarioLabel">Usuario</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formUsuario">
+          <input type="hidden" id="IdUsuario" value="0" />
+          <div class="row g-2">
+            <div class="col-md-6">
+              <label class="form-label">Nombres</label>
+              <input type="text" class="form-control" id="Nombres" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Apellidos</label>
+              <input type="text" class="form-control" id="Apellidos" />
+            </div>
+            <div class="col-md-8 mt-2">
+              <label class="form-label">Correo</label>
+              <input type="email" class="form-control" id="Correo" />
+            </div>
+            <div class="col-md-4 mt-2">
+              <label class="form-label">Activo</label>
+              <select id="Activo" class="form-select">
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@section scripts {
+    @* DataTables CSS/JS bundles deben estar registrados en BundleConfig *@
+    @Styles.Render("~/Content/datatables")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datatables.responsive")
+
+    <script>
+        $(document).ready(function () {
+            var tabla = $('#tabla').DataTable({
+                responsive: true,
+                ordering: false,
+                ajax: {
+                    url: '@Url.Action("ListarUsuarios","Home")',
+                    type: 'GET',
+                    dataType: 'json'
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            // Icon-only edit and delete buttons on the left
+                            return '<div class="actions-cell">'
+                                + '<button class="btn action-btn btn-edit btn-sm btn-editar" title="Editar"> <i class="fas fa-pen"></i> </button>'
+                                + '<button class="btn action-btn btn-delete btn-sm btn-eliminar" title="Eliminar"> <i class="fas fa-trash"></i> </button>'
+                                + '</div>';
+                        },
+                        orderable: false
+                    },
+                    { data: 'IdUsuario' },
+                    { data: 'Nombre' },
+                    { data: 'Apellido' },
+                    { data: 'Correo' },
+                    {
+                        data: 'Activo',
+                        render: function (data, type, row) {
+                            if (data === true || data === 1 || data === '1') {
+                                return '<span class="badge-yes">Sí</span>';
+                            }
+                            return '<span class="badge-no">No</span>';
+                        },
+                        className: 'text-center'
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+                }
+            });
+
+            // Open modal for creating (front only)
+            $('#btnCrear').on('click', function () {
+                $('#modalUsuarioLabel').text('Crear Usuario');
+                $('#formUsuario')[0].reset();
+                $('#IdUsuario').val(0);
+            });
+
+            // Handle edit button click in table (front only)
+            $('#tabla tbody').on('click', '.btn-editar', function () {
+                var data = tabla.row($(this).closest('tr')).data();
+                if (!data) return;
+                $('#modalUsuarioLabel').text('Editar Usuario');
+                $('#IdUsuario').val(data.IdUsuario);
+                $('#Nombres').val(data.Nombre);
+                $('#Apellidos').val(data.Apellido);
+                $('#Correo').val(data.Correo);
+                $('#Activo').val(data.Activo == 1 || data.Activo === true ? '1' : '0');
+                var modal = new bootstrap.Modal(document.getElementById('modalUsuario'));
+                modal.show();
+            });
+
+            // Handle delete button click - call server
+            $('#tabla tbody').on('click', '.btn-eliminar', function () {
+                var data = tabla.row($(this).closest('tr')).data();
+                if (!data) return;
+                if (confirm('¿Eliminar usuario ' + data.Nombre + ' ' + data.Apellido + '?')) {
+                    $.ajax({
+                        url: '@Url.Action("EliminarUsuario","Home")',
+                        method: 'POST',
+                        data: { id: data.IdUsuario },
+                        success: function (res) {
+                            if (res.success) {
+                                tabla.ajax.reload(null, false);
+                                alert(res.message);
+                            } else {
+                                alert(res.message || 'Error al eliminar');
+                            }
+                        },
+                        error: function () { alert('Error del servidor'); }
+                    });
+                }
+            });
+
+            // Guardar button - crea o edita via servidor
+            $('#btnGuardar').on('click', function () {
+                var usuario = {
+                    IdUsuario: parseInt($('#IdUsuario').val() || 0),
+                    Nombre: $('#Nombres').val(),
+                    Apellido: $('#Apellidos').val(),
+                    Correo: $('#Correo').val(),
+                    Activo: $('#Activo').val() == '1' ? true : false
+                };
+
+                $.ajax({
+                    url: '@Url.Action("GuardarUsuario","Home")',
+                    method: 'POST',
+                    data: usuario,
+                    success: function (res) {
+                        if (res.success) {
+                            // reload table to get persistent data and ids
+                            tabla.ajax.reload(null, false);
+                            var modalEl = document.getElementById('modalUsuario');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            if (modal) modal.hide();
+                        } else {
+                            alert(res.message || 'Error al guardar');
+                        }
+                    },
+                    error: function () { alert('Error del servidor'); }
+                });
+            });
+        });
+    </script>
+}
