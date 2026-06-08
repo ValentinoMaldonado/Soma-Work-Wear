@@ -1,8 +1,35 @@
-﻿
 @{
-    ViewBag.Title = "Categoria";
+    ViewBag.Title = "Categorias";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Categoria</h2>
+<section class="admin-page" aria-labelledby="categoryTitle">
+    <div class="admin-page-header">
+        <div>
+            <span class="admin-eyebrow">Mantenedor</span>
+            <h1 id="categoryTitle">Categorias</h1>
+            <p>Organiza las familias de prendas y accesorios para mantener el catalogo facil de recorrer.</p>
+        </div>
+        <button class="btn btn-glass" type="button">
+            <i class="fas fa-plus me-1"></i> Nueva categoria
+        </button>
+    </div>
 
+    <div class="resource-grid">
+        <article class="admin-card resource-card">
+            <i class="fas fa-hard-hat"></i>
+            <h2>Proteccion</h2>
+            <p>Elementos pensados para seguridad visible y uso operativo.</p>
+        </article>
+        <article class="admin-card resource-card">
+            <i class="fas fa-tshirt"></i>
+            <h2>Uniformes</h2>
+            <p>Prendas base para equipos comerciales, tecnicos e industriales.</p>
+        </article>
+        <article class="admin-card resource-card">
+            <i class="fas fa-toolbox"></i>
+            <h2>Accesorios</h2>
+            <p>Complementos para completar kits corporativos de trabajo.</p>
+        </article>
+    </div>
+</section>

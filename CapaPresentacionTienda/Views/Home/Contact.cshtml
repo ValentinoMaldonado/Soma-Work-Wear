@@ -1,19 +1,36 @@
-﻿@{
-    ViewBag.Title = "Contact";
+@{
+    ViewBag.Title = "Contacto";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <address>
-        One Microsoft Way<br />
-        Redmond, WA 98052-6399<br />
-        <abbr title="Phone">P:</abbr>
-        425.555.0100
-    </address>
+<main class="container content-page" aria-labelledby="contactTitle">
+    <section class="page-hero compact">
+        <span class="eyebrow">Atencion comercial</span>
+        <h1 id="contactTitle">Hablemos de tu proximo uniforme</h1>
+        <p>
+            Compartinos rubro, cantidad estimada y necesidades de personalizacion. Un asesor puede preparar una propuesta de referencia para tu equipo.
+        </p>
+    </section>
 
-    <address>
-        <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-        <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-    </address>
+    <section class="contact-layout">
+        <div class="glass-panel contact-panel">
+            <h2>Datos de contacto</h2>
+            <address>
+                Av. Industrial 1420, Parque Empresarial Norte<br />
+                Buenos Aires, Argentina<br />
+                <span>Tel: +54 11 5555-0188</span><br />
+                <span>WhatsApp: +54 9 11 5555-0199</span>
+            </address>
+            <p>
+                <strong>Comercial:</strong> <a href="mailto:ventas@somaworkwear.com">ventas@somaworkwear.com</a><br />
+                <strong>Soporte:</strong> <a href="mailto:soporte@somaworkwear.com">soporte@somaworkwear.com</a>
+            </p>
+        </div>
+
+        <div class="glass-panel contact-panel">
+            <h2>Horarios</h2>
+            <p>Lunes a viernes de 9:00 a 18:00.</p>
+            <p>Sabados con agenda previa para pedidos corporativos.</p>
+            <a class="btn btn-glass" href="mailto:ventas@somaworkwear.com">Enviar consulta</a>
+        </div>
+    </section>
 </main>

@@ -1,8 +1,43 @@
-﻿
 @{
-    ViewBag.Title = "Producto";
+    ViewBag.Title = "Productos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Producto</h2>
+<section class="admin-page" aria-labelledby="productTitle">
+    <div class="admin-page-header">
+        <div>
+            <span class="admin-eyebrow">Mantenedor</span>
+            <h1 id="productTitle">Productos</h1>
+            <p>Administra prendas, variantes y disponibilidad del catalogo de SomaWorkWear.</p>
+        </div>
+        <button class="btn btn-glass" type="button">
+            <i class="fas fa-plus me-1"></i> Nuevo producto
+        </button>
+    </div>
 
+    <div class="product-shell">
+        <div class="admin-card product-focus">
+            <span class="admin-eyebrow">Destacado</span>
+            <h2>Campera tecnica reflectiva</h2>
+            <p>Ficha visual de referencia para revisar estado, categoria y marca antes de publicar.</p>
+            <div class="status-row">
+                <span>Categoria: Proteccion</span>
+                <span>Marca: Soma Pro</span>
+                <span>Estado: Activo</span>
+            </div>
+        </div>
+
+        <div class="resource-grid compact-grid">
+            <article class="admin-card resource-card">
+                <i class="fas fa-layer-group"></i>
+                <h2>Variantes</h2>
+                <p>Talles, colores y versiones por temporada.</p>
+            </article>
+            <article class="admin-card resource-card">
+                <i class="fas fa-warehouse"></i>
+                <h2>Stock</h2>
+                <p>Control visual para niveles y disponibilidad.</p>
+            </article>
+        </div>
+    </div>
+</section>

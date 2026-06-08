@@ -1,93 +1,139 @@
-﻿<!DOCTYPE html>
-<html>
-<head>  
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - SomaWorkWear Admin</title>
     @Styles.Render("~/Content/fontawesome")
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
-    <style>
-        :root {
-            --bg-dark: #071019; /* page background */
-            --panel-dark: rgba(6,10,14,0.8);
-            --accent-1: #0ea5a3; /* turquoise */
-            --accent-2: #1fb884; /* green */
-            --accent-3: #1167b1; /* deep blue */
-            --muted: rgba(255,255,255,0.65);
-        }
-
-        body { background: var(--bg-dark); color: var(--muted); }
-
-        /* Sidebar redesign (dark, green/blue gradient, translucent) */
-        .offcanvas.offcanvas-start {
-            width: 300px; /* slightly larger */
-            max-width: 92%;
-            background: linear-gradient(180deg, rgba(8,12,20,0.95), rgba(6,10,18,0.92));
-            color: #e6f7f3;
-            border-right: 1px solid rgba(255,255,255,0.03);
-            backdrop-filter: blur(6px) saturate(120%);
-        }
-
-        .offcanvas-header.bg-primary {
-            background: linear-gradient(90deg, rgba(10,40,35,0.95), rgba(6,30,60,0.95));
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            color: #e6fbf7;
-        }
-
-        .sidebar-brand {
-            padding: 1rem 1.25rem;
-            font-weight: 800;
-            font-size: 1.05rem;
-            color: #e8fff8;
-            text-shadow: 0 2px 12px rgba(10,200,170,0.06);
-        }
-
-        .sidebar .list-group {
-            background: transparent;
-        }
-
-        .sidebar .list-group-item {
-            border: none;
-            padding: 0.9rem 1.25rem;
-            transition: background .15s ease, transform .08s ease;
-            background: linear-gradient(90deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-            color: #dffdf7;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            border-radius: 8px;
-            margin: 0.35rem 0.65rem;
-        }
-
-        .sidebar .list-group-item:hover {
-            background: linear-gradient(90deg, rgba(16,140,120,0.12), rgba(20,90,150,0.06));
-            transform: translateY(-2px);
-        }
-
-        .sidebar .list-group-item .fa-fw { width: 1.25rem; }
-
-        .sidebar .user-block { padding: 1rem 1.25rem; }
-        .sidebar .user-block .avatar { width:44px;height:44px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--accent-3),var(--accent-1));color:white }
-
-        .sidebar .list-group-item.active {
-            background: linear-gradient(90deg, rgba(10,150,120,0.14), rgba(10,90,160,0.12));
-            box-shadow: 0 8px 24px rgba(5,120,100,0.08) inset;
-        }
-
-        /* Transparent outline buttons for navbar toggle */
-        .navbar .btn-outline-light {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,255,255,0.04);
-            color: #dffdf7;
-            transition: background .12s ease, transform .08s ease;
-        }
-        .navbar .btn-outline-light:hover { background: rgba(16,140,120,0.10); transform: translateY(-1px); }
-
-        /* Small tweaks to content container so dark panels pop */        
-        .container.body-content { padding-top: 1.75rem; padding-bottom: 2.5rem; }
-    </style>
 </head>
-<body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark" style="background: linear-gradient(90deg,#061218,#09232b);">        <div class="container">            <div class="d-flex align-items-center">                @Html.ActionLink("SomaWorkWear", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })                <!-- Sidebar toggle button -->                <button class="btn btn-outline-light ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" title="Abrir menú">                    <i class="fas fa-bars"></i>                </button>            </div>            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"                    aria-expanded="false" aria-label="Toggle navigation">                <span class="navbar-toggler-icon"></span>            </button>            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">                <ul class="navbar-nav flex-grow-1">                    <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>                    <li class="nav-item">@Html.ActionLink("Acerca", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>                    <li class="nav-item">@Html.ActionLink("Contacto", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>                </ul>            </div>        </div>    </nav>    <!-- Offcanvas sidebar -->    @{         var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";        var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";        Func<string, string, string> isActive = (c, a) => (string.Equals(currentController, c, StringComparison.OrdinalIgnoreCase)                                                          && (string.IsNullOrEmpty(a) || string.Equals(currentAction, a, StringComparison.OrdinalIgnoreCase)))                                                         ? "active" : "";    }    <div class="offcanvas offcanvas-start sidebar" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">      <div class="offcanvas-header bg-primary text-white">        <div class="sidebar-brand">Panel - Administración</div>        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>      </div>      <div class="offcanvas-body p-0">        <div class="list-group list-group-flush">          <a href="@Url.Action("Categoria","Mantenedor")" class="list-group-item list-group-item-action d-flex align-items-center @isActive("Mantenedor","Categoria")">            <i class="fas fa-tags fa-fw me-2 text-primary"></i>            <span>Categoría</span>          </a>          <a href="@Url.Action("Marca","Mantenedor")" class="list-group-item list-group-item-action d-flex align-items-center @isActive("Mantenedor","Marca")">            <i class="fas fa-bookmark fa-fw me-2 text-primary"></i>            <span>Marca</span>          </a>          <a href="@Url.Action("Producto","Mantenedor")" class="list-group-item list-group-item-action d-flex align-items-center @isActive("Mantenedor","Producto")">            <i class="fas fa-box-open fa-fw me-2 text-primary"></i>            <span>Producto</span>          </a>          <!-- Nuevo botón Usuarios debajo de Producto -->          <a href="@Url.Action("Usuarios","Home")" class="list-group-item list-group-item-action d-flex align-items-center @isActive("Home","Usuarios")">            <i class="fas fa-users fa-fw me-2" style="color:var(--accent-1)"></i>            <span>Usuarios</span>          </a>        </div>        <div class="user-block border-top mt-3">          <div class="d-flex align-items-center px-3">            <div class="avatar"> <i class="fas fa-user"></i> </div>            <div class="ms-2">              <div class="fw-bold">Nombre Apellido</div>              <small class="text-muted">Administrador</small>            </div>          </div>          <div class="px-3 mt-3 mb-3">            <a class="btn btn-outline-danger btn-sm w-100" href="@Url.Action("Logout","Account")">Cerrar sesión</a>          </div>        </div>      </div>    </div>    <div class="container body-content">        @RenderBody()        <hr />        <footer>            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>        </footer>    </div>    @Scripts.Render("~/bundles/jquery")    <!-- load bootstrap bundle and fontawesome directly -->    <script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>    <script src="@Url.Content("~/Scripts/fontawesome/all.min.js")"></script>    @RenderSection("scripts", required: false)</body></html>
+<body class="admin-shell">
+    @{
+        var currentController = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+        var currentAction = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+        Func<string, string, string> isActive = (c, a) => (string.Equals(currentController, c, StringComparison.OrdinalIgnoreCase)
+                                                          && (string.IsNullOrEmpty(a) || string.Equals(currentAction, a, StringComparison.OrdinalIgnoreCase)))
+                                                         ? "active" : "";
+    }
+
+    <nav class="navbar navbar-expand-lg navbar-dark admin-topbar">
+        <div class="container-fluid px-3 px-lg-4">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-icon-glass" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar" title="Abrir menu">
+                    <i class="fas fa-bars icon-neon"></i>
+                </button>
+                @Html.ActionLink("SomaWorkWear", "Index", "Home", new { area = "" }, new { @class = "navbar-brand admin-brand" })
+            </div>
+
+            <button type="button" class="navbar-toggler admin-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Abrir navegacion" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Abrir navegacion">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                    <li class="nav-item">@Html.ActionLink("Panel", "Index", "Home", new { area = "" }, new { @class = "nav-link " + isActive("Home", "Index") })</li>
+                    <li class="nav-item">@Html.ActionLink("Usuarios", "Usuarios", "Home", new { area = "" }, new { @class = "nav-link " + isActive("Home", "Usuarios") })</li>
+                    <li class="nav-item">
+                        <button class="btn btn-glass btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+                            <i class="fas fa-layer-group me-1"></i> Modulos
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="offcanvas offcanvas-start admin-sidebar" tabindex="-1" id="sidebar" aria-labelledby="sidebarLabel">
+        <div class="offcanvas-header">
+            <div>
+                <span class="sidebar-kicker">Administracion</span>
+                <h2 class="sidebar-brand" id="sidebarLabel">Panel Soma</h2>
+            </div>
+            <button type="button" class="btn btn-icon-glass btn-sidebar-close" data-bs-dismiss="offcanvas" aria-label="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="offcanvas-body">
+            <nav class="sidebar-nav" aria-label="Navegacion principal">
+                <a href="@Url.Action("Index","Home")" class="sidebar-link @isActive("Home","Index")">
+                    <i class="fas fa-tachometer-alt fa-fw icon-neon"></i>
+                    <span>Panel general</span>
+                </a>
+                <a href="@Url.Action("Categoria","Mantenedor")" class="sidebar-link @isActive("Mantenedor","Categoria")">
+                    <i class="fas fa-tags fa-fw icon-neon"></i>
+                    <span>Categorias</span>
+                </a>
+                <a href="@Url.Action("Marca","Mantenedor")" class="sidebar-link @isActive("Mantenedor","Marca")">
+                    <i class="fas fa-bookmark fa-fw icon-neon"></i>
+                    <span>Marcas</span>
+                </a>
+                <a href="@Url.Action("Producto","Mantenedor")" class="sidebar-link @isActive("Mantenedor","Producto")">
+                    <i class="fas fa-box-open fa-fw icon-neon"></i>
+                    <span>Productos</span>
+                </a>
+                <a href="@Url.Action("Usuarios","Home")" class="sidebar-link @isActive("Home","Usuarios")">
+                    <i class="fas fa-users fa-fw icon-neon"></i>
+                    <span>Usuarios</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-status">
+                <div class="avatar"><i class="fas fa-user-shield"></i></div>
+                <div>
+                    <strong>Administrador</strong>
+                    <span>Sesion activa</span>
+                </div>
+            </div>
+
+            <a class="btn btn-danger-glass w-100" href="@Url.Action("Logout","Account")">
+                <i class="fas fa-sign-out-alt me-1"></i> Cerrar sesion
+            </a>
+        </div>
+    </div>
+
+    <main class="container-fluid admin-main">
+        @RenderBody()
+    </main>
+
+    <footer class="admin-footer">
+        <span>&copy; @DateTime.Now.Year SomaWorkWear</span>
+        <span>Panel administrativo en modo oscuro.</span>
+    </footer>
+
+    @{
+        var bundles = System.Web.Optimization.BundleTable.Bundles;
+    }
+
+    @if (bundles != null)
+    {
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/fontawesome")
+    }
+    else
+    {
+        <script src="@Url.Content("~/Scripts/jquery-3.7.0.slim.js")"></script>
+        <script src="@Url.Content("~/Scripts/bootstrap.bundle.min.js")"></script>
+        <script src="@Url.Content("~/Scripts/fontawesome/all.min.js")"></script>
+    }
+
+    <script>
+        (function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                try { new bootstrap.Tooltip(tooltipTriggerEl); } catch (e) { }
+            });
+
+            document.querySelectorAll('.icon-neon').forEach(function (el) {
+                el.addEventListener('mouseenter', function () { el.classList.add('hovered'); });
+                el.addEventListener('mouseleave', function () { el.classList.remove('hovered'); });
+            });
+        })();
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

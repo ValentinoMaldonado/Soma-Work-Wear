@@ -15,16 +15,17 @@ namespace CapaPresentacionAdmin
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Font Awesome JS (optional) - include folder if you use the JS approach
-            bundles.Add(new ScriptBundle("~/bundles/fontawesome").IncludeDirectory(
-                        "~/Scripts/fontawesome", "*.js", searchSubdirectories: true));
+            // Vendor scripts are already minified. Use Bundle instead of ScriptBundle
+            // so the legacy ASP.NET minifier does not try to parse modern JS syntax.
+            bundles.Add(new Bundle("~/bundles/fontawesome").Include(
+                        "~/Scripts/fontawesome/all.min.js"));
 
             // Modernizr
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
             // Bootstrap (use bundle that includes Popper: bootstrap.bundle)
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.bundle.min.js"));
 
             // DataTables scripts
@@ -53,10 +54,6 @@ namespace CapaPresentacionAdmin
                 "~/Content/DataTables/css/buttons.bootstrap4.min.css"
             ));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
-            
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

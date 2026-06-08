@@ -53,72 +53,87 @@ namespace CapaDatos
         // Insert a new usuario and return the generated identity IdUsuario
         public int Registrar(Usuario objeto, out string Mensaje)
         {
+            int idautogenerado = 0;
             Mensaje = string.Empty;
-            int idGenerado = 0;
+
             try
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    string query = "INSERT INTO USUARIO (Nombres,Apellidos,Correo,Clave,Reestablecer,Activo) OUTPUT INSERTED.IdUsuario VALUES (@Nombres,@Apellidos,@Correo,@Clave,@Reestablecer,@Activo)";
-                    using (SqlCommand cmd = new SqlCommand(query, oconexion))
+                    // Cambio: el registro se realiza mediante procedimiento almacenado.
+                    using (SqlCommand cmd = new SqlCommand("dbo.sp_RegistrarUsuario", oconexion))
                     {
-                        cmd.Parameters.AddWithValue("@Nombres", objeto.Nombre ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Apellidos", objeto.Apellido ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Correo", objeto.Correo ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Clave", objeto.Clave ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Reestablecer", objeto.Reestablecer);
-                        cmd.Parameters.AddWithValue("@Activo", objeto.Activo);
+                        cmd.Parameters.AddWithValue("Nombres", objeto.Nombre ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Apellidos", objeto.Apellido ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Correo", objeto.Correo ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Clave", objeto.Clave ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Reestablecer", objeto.Reestablecer);
+                        cmd.Parameters.AddWithValue("Activo", objeto.Activo);
 
-                        cmd.CommandType = CommandType.Text;
+                        // Cambio: el procedimiento devuelve el id generado y un mensaje.
+                        cmd.Parameters.Add("Resultado", SqlDbType.Int).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
                         oconexion.Open();
-                        var result = cmd.ExecuteScalar();
-                        if (result != null)
-                        {
-                            idGenerado = Convert.ToInt32(result);
-                        }
+                        cmd.ExecuteNonQuery();
+
+                        idautogenerado = Convert.ToInt32(cmd.Parameters["Resultado"].Value);
+                        Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
+
                     }
                 }
             }
             catch (Exception ex)
             {
+                idautogenerado = 0;
                 Mensaje = ex.Message;
                 System.Diagnostics.Trace.TraceError(ex.ToString());
             }
-            return idGenerado;
+
+            return idautogenerado;
         }
+
 
         // Update existing usuario
         public bool Editar(Usuario objeto, out string Mensaje)
         {
-            Mensaje = string.Empty;
             bool respuesta = false;
+            Mensaje = string.Empty;
+
             try
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    string query = "UPDATE USUARIO SET Nombres=@Nombres,Apellidos=@Apellidos,Correo=@Correo,Clave=@Clave,Reestablecer=@Reestablecer,Activo=@Activo WHERE IdUsuario=@IdUsuario";
-                    using (SqlCommand cmd = new SqlCommand(query, oconexion))
+                    // Cambio: ahora la edicion se realiza mediante el procedimiento almacenado.
+                    using (SqlCommand cmd = new SqlCommand("dbo.sp_EditarUsuario", oconexion))
                     {
-                        cmd.Parameters.AddWithValue("@IdUsuario", objeto.IdUsuario);
-                        cmd.Parameters.AddWithValue("@Nombres", objeto.Nombre ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Apellidos", objeto.Apellido ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Correo", objeto.Correo ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Clave", objeto.Clave ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@Reestablecer", objeto.Reestablecer);
-                        cmd.Parameters.AddWithValue("@Activo", objeto.Activo);
+                        cmd.Parameters.AddWithValue("IdUsuario", objeto.IdUsuario);
+                        cmd.Parameters.AddWithValue("Nombres", objeto.Nombre ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Apellidos", objeto.Apellido ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Correo", objeto.Correo ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("Activo", objeto.Activo);
 
-                        cmd.CommandType = CommandType.Text;
+                        // Cambio: el procedimiento devuelve si actualizo correctamente y un mensaje.
+                        cmd.Parameters.Add("Resultado", SqlDbType.Bit).Direction = ParameterDirection.Output;
+                        cmd.Parameters.Add("Mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                        cmd.CommandType = CommandType.StoredProcedure;
+
                         oconexion.Open();
-                        int filas = cmd.ExecuteNonQuery();
-                        respuesta = filas > 0;
+                        cmd.ExecuteNonQuery();
+
+                        respuesta = Convert.ToBoolean(cmd.Parameters["Resultado"].Value);
+                        Mensaje = cmd.Parameters["Mensaje"].Value.ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
+                respuesta = false;
                 Mensaje = ex.Message;
                 System.Diagnostics.Trace.TraceError(ex.ToString());
             }
+
             return respuesta;
         }
 

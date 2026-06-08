@@ -45,7 +45,7 @@ namespace CapaPresentacionAdmin.Controllers
                     if (id > 0)
                     {
                         usuario.IdUsuario = id;
-                        return Json(new { success = true, message = "Usuario registrado", id = id, data = usuario });
+                        return Json(new { success = true, message = string.IsNullOrWhiteSpace(mensaje) ? "Usuario registrado" : mensaje, id = id, data = usuario });
                     }
                     return Json(new { success = false, message = mensaje ?? "No se pudo registrar" });
                 }

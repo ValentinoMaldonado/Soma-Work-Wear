@@ -1,33 +1,72 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+@{
+    ViewBag.Title = "Inicio";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
+<main class="store-home">
+    <section class="store-hero" aria-labelledby="homeTitle">
+        <div class="container hero-grid">
+            <div class="hero-copy">
+                <span class="eyebrow">Nueva linea industrial</span>
+                <h1 id="homeTitle">Workwear tecnico para equipos que no paran</h1>
+                <p class="lead">
+                    Prendas resistentes, comodas y listas para jornadas exigentes. Disenamos soluciones textiles para produccion, logistica, obra y servicios.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn btn-glass btn-lg" href="@Url.Action("Contact", "Home")">Solicitar cotizacion</a>
+                    <a class="btn btn-ghost btn-lg" href="@Url.Action("About", "Home")">Conocer la marca</a>
+                </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+                <img src="@Url.Content("~/Content/images/workwear-hero.png")" alt="" />
+            </div>
+        </div>
     </section>
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
+    <section class="container section-band" aria-label="Categorias destacadas">
+        <div class="section-heading">
+            <span class="eyebrow">Catalogo</span>
+            <h2>Equipamiento por rubro</h2>
+        </div>
+        <div class="feature-grid">
+            <article class="feature-card">
+                <span class="feature-kicker">01</span>
+                <h3>Industria y logistica</h3>
+                <p>Camperas, pantalones cargo, chalecos reflectivos y accesorios de alta durabilidad.</p>
+            </article>
+            <article class="feature-card">
+                <span class="feature-kicker">02</span>
+                <h3>Servicios tecnicos</h3>
+                <p>Uniformes livianos, respirables y listos para movilidad continua durante todo el dia.</p>
+            </article>
+            <article class="feature-card">
+                <span class="feature-kicker">03</span>
+                <h3>Imagen corporativa</h3>
+                <p>Prendas personalizables para unificar presencia de marca sin perder proteccion.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="container split-section" aria-label="Ventajas">
+        <div>
+            <span class="eyebrow">Rendimiento</span>
+            <h2>Una estetica sobria con materiales preparados para uso real</h2>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                Trabajamos con telas reforzadas, costuras de alta exigencia y terminaciones pensadas para sostener una imagen profesional en ambientes complejos.
             </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
+        </div>
+        <div class="metric-grid">
+            <div class="metric-tile">
+                <strong>24/7</strong>
+                <span>Pedidos empresariales</span>
+            </div>
+            <div class="metric-tile">
+                <strong>+35</strong>
+                <span>Modelos base</span>
+            </div>
+            <div class="metric-tile">
+                <strong>100%</strong>
+                <span>Modo corporativo</span>
+            </div>
+        </div>
+    </section>
 </main>
