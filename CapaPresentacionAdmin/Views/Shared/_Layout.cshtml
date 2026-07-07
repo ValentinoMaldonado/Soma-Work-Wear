@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="@Url.Content("~/Content/all.css")" />
     <!-- Custom Admin Styles -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Site.css")" />
+    @RenderSection("styles", required: false)
 </head>
 <body class="admin-shell">
     @{
@@ -18,6 +19,11 @@
         Func<string, string, string> isActive = (c, a) => (string.Equals(currentController, c, StringComparison.OrdinalIgnoreCase)
                                                           && (string.IsNullOrEmpty(a) || string.Equals(currentAction, a, StringComparison.OrdinalIgnoreCase)))
                                                          ? "active" : "";
+        var activeHomeIndex = isActive("Home", "Index");
+        var activeMantenedorCategoria = isActive("Mantenedor", "Categoria");
+        var activeMantenedorMarca = isActive("Mantenedor", "Marca");
+        var activeMantenedorProducto = isActive("Mantenedor", "Producto");
+        var activeHomeUsuarios = isActive("Home", "Usuarios");
     }
 
     <nav class="navbar navbar-expand-lg navbar-dark admin-topbar">
@@ -61,23 +67,23 @@
 
         <div class="offcanvas-body">
             <nav class="sidebar-nav" aria-label="Navegacion principal">
-                <a href="@Url.Action("Index","Home")" class="sidebar-link @isActive("Home","Index")">
+                <a href="@Url.Action("Index","Home")" class="sidebar-link @activeHomeIndex">
                     <i class="fas fa-tachometer-alt fa-fw icon-neon"></i>
                     <span>Panel general</span>
                 </a>
-                <a href="@Url.Action("Categoria","Mantenedor")" class="sidebar-link @isActive("Mantenedor","Categoria")">
+                <a href="@Url.Action("Categoria","Mantenedor")" class="sidebar-link @activeMantenedorCategoria">
                     <i class="fas fa-tags fa-fw icon-neon"></i>
                     <span>Categorias</span>
                 </a>
-                <a href="@Url.Action("Marca","Mantenedor")" class="sidebar-link @isActive("Mantenedor","Marca")">
+                <a href="@Url.Action("Marca","Mantenedor")" class="sidebar-link @activeMantenedorMarca">
                     <i class="fas fa-bookmark fa-fw icon-neon"></i>
                     <span>Marcas</span>
                 </a>
-                <a href="@Url.Action("Producto","Mantenedor")" class="sidebar-link @isActive("Mantenedor","Producto")">
+                <a href="@Url.Action("Producto","Mantenedor")" class="sidebar-link @activeMantenedorProducto">
                     <i class="fas fa-box-open fa-fw icon-neon"></i>
                     <span>Productos</span>
                 </a>
-                <a href="@Url.Action("Usuarios","Home")" class="sidebar-link @isActive("Home","Usuarios")">
+                <a href="@Url.Action("Usuarios","Home")" class="sidebar-link @activeHomeUsuarios">
                     <i class="fas fa-users fa-fw icon-neon"></i>
                     <span>Usuarios</span>
                 </a>
