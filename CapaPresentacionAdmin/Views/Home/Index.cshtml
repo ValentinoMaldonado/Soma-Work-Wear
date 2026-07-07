@@ -1,33 +1,54 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+@{
+    ViewBag.Title = "Panel";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
+<section class="admin-dashboard" aria-labelledby="dashboardTitle">
+    <div class="dashboard-hero">
+        <div>
+            <span class="admin-eyebrow">Operacion interna</span>
+            <h1 id="dashboardTitle">Panel de control SomaWorkWear</h1>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                Vista general para administrar catalogo, usuarios y recursos comerciales desde una interfaz oscura, clara y enfocada.
             </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
+        </div>
+        <a class="btn btn-glass" href="@Url.Action("Producto", "Mantenedor")">
+            <i class="fas fa-box-open me-1"></i> Gestionar productos
+        </a>
     </div>
-</main>
+
+    <div class="admin-stat-grid">
+        <article class="stat-card">
+            <i class="fas fa-tags"></i>
+            <span>Categorias</span>
+            <strong>Activas</strong>
+        </article>
+        <article class="stat-card">
+            <i class="fas fa-bookmark"></i>
+            <span>Marcas</span>
+            <strong>Catalogadas</strong>
+        </article>
+        <article class="stat-card">
+            <i class="fas fa-boxes"></i>
+            <span>Productos</span>
+            <strong>En revision</strong>
+        </article>
+        <article class="stat-card">
+            <i class="fas fa-users"></i>
+            <span>Usuarios</span>
+            <strong>Administrables</strong>
+        </article>
+    </div>
+
+    <div class="admin-card-grid">
+        <article class="admin-card">
+            <span class="admin-eyebrow">Flujo sugerido</span>
+            <h2>Actualiza el catalogo por etapas</h2>
+            <p>Primero categorias, luego marcas y por ultimo productos. Asi se mantiene la carga ordenada y facil de auditar.</p>
+        </article>
+        <article class="admin-card">
+            <span class="admin-eyebrow">Control visual</span>
+            <h2>Interfaz oscura y consistente</h2>
+            <p>Los modulos comparten botones transparentes, bordes azul/verde y estados hover para navegar con menos ruido.</p>
+        </article>
+    </div>
+</section>

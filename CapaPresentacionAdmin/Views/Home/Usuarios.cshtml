@@ -1,7 +1,215 @@
-﻿
 @{
     ViewBag.Title = "Usuarios";
 }
 
-<h2>Usuarios</h2>
+<section class="admin-page usuarios-page" aria-labelledby="usersTitle">
+    <div class="admin-page-header">
+        <div>
+            <span class="admin-eyebrow">Administracion</span>
+            <h1 id="usersTitle">Usuarios</h1>
+            <p>Gestiona accesos, estado y datos basicos de los usuarios registrados en el sistema.</p>
+        </div>
 
+        <button id="btnCrear" type="button" class="btn btn-glass" data-bs-toggle="modal" data-bs-target="#modalUsuario">
+            <i class="fas fa-plus-circle me-1"></i> Crear nuevo
+        </button>
+    </div>
+
+    <div class="futuristic-card">
+        <div class="futuristic-header">
+            <div>
+                <div class="page-title">Listado de usuarios</div>
+                <small class="text-muted">Datos cargados via AJAX</small>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table id="tabla" class="table table-borderless futuristic-table mb-0" style="width:100%">
+                <thead>
+                    <tr>
+                        <th style="width:8%"></th>
+                        <th style="width:6%">ID</th>
+                        <th style="width:28%">Nombres</th>
+                        <th style="width:28%">Apellidos</th>
+                        <th style="width:26%">Correo</th>
+                        <th style="width:10%">Activo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="modalUsuario" tabindex="-1" aria-labelledby="modalUsuarioLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalUsuarioLabel">Usuario</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formUsuario">
+                    <input type="hidden" id="IdUsuario" value="0" />
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label">Nombres</label>
+                            <input type="text" class="form-control" id="Nombres" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Apellidos</label>
+                            <input type="text" class="form-control" id="Apellidos" />
+                        </div>
+                        <div class="col-md-8 mt-2">
+                            <label class="form-label">Correo</label>
+                            <input type="email" class="form-control" id="Correo" />
+                        </div>
+                        <div class="col-md-4 mt-2">
+                            <label class="form-label">Activo</label>
+                            <select id="Activo" class="form-select">
+                                <option value="1">Si</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mt-2 clave-usuario-group">
+                            <label class="form-label">Clave</label>
+                            <input type="password" class="form-control" id="Clave" autocomplete="new-password" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ghost" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-glass" id="btnGuardar">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    @Styles.Render("~/Content/datatables")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/datatables.responsive")
+
+    <script>
+        $(document).ready(function () {
+            var tabla = $('#tabla').DataTable({
+                responsive: true,
+                ordering: false,
+                ajax: {
+                    url: '@Url.Action("ListarUsuarios","Home")',
+                    type: 'GET',
+                    dataType: 'json'
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            // Icon-only edit and delete buttons on the left
+                            return '<div class="actions-cell">'
+                                + '<button class="btn action-btn btn-edit btn-sm btn-editar" title="Editar"> <i class="fas fa-pen"></i> </button>'
+                                + '<button class="btn action-btn btn-delete btn-sm btn-eliminar" title="Eliminar"> <i class="fas fa-trash"></i> </button>'
+                                + '</div>';
+                        },
+                        orderable: false
+                    },
+                    { data: 'IdUsuario' },
+                    { data: 'Nombre' },
+                    { data: 'Apellido' },
+                    { data: 'Correo' },
+                    {
+                        data: 'Activo',
+                        render: function (data, type, row) {
+                            if (data === true || data === 1 || data === '1') {
+                                return '<span class="badge-yes">Si</span>';
+                            }
+                            return '<span class="badge-no">No</span>';
+                        },
+                        className: 'text-center'
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+                }
+            });
+
+            // Open modal for creating (front only)
+            $('#btnCrear').on('click', function () {
+                $('#modalUsuarioLabel').text('Crear Usuario');
+                $('#formUsuario')[0].reset();
+                $('#IdUsuario').val(0);
+                $('.clave-usuario-group').show();
+            });
+
+            // Handle edit button click in table (front only)
+            $('#tabla tbody').on('click', '.btn-editar', function () {
+                var data = tabla.row($(this).closest('tr')).data();
+                if (!data) return;
+                $('#modalUsuarioLabel').text('Editar Usuario');
+                $('#IdUsuario').val(data.IdUsuario);
+                $('#Nombres').val(data.Nombre);
+                $('#Apellidos').val(data.Apellido);
+                $('#Correo').val(data.Correo);
+                $('#Clave').val('');
+                $('#Activo').val(data.Activo == 1 || data.Activo === true ? '1' : '0');
+                $('.clave-usuario-group').hide();
+                var modal = new bootstrap.Modal(document.getElementById('modalUsuario'));
+                modal.show();
+            });
+
+            // Handle delete button click - call server
+            $('#tabla tbody').on('click', '.btn-eliminar', function () {
+                var data = tabla.row($(this).closest('tr')).data();
+                if (!data) return;
+                if (confirm('Eliminar usuario ' + data.Nombre + ' ' + data.Apellido + '?')) {
+                    $.ajax({
+                        url: '@Url.Action("EliminarUsuario","Home")',
+                        method: 'POST',
+                        data: { id: data.IdUsuario },
+                        success: function (res) {
+                            if (res.success) {
+                                tabla.ajax.reload(null, false);
+                                alert(res.message);
+                            } else {
+                                alert(res.message || 'Error al eliminar');
+                            }
+                        },
+                        error: function () { alert('Error del servidor'); }
+                    });
+                }
+            });
+
+            // Guardar button - crea o edita via servidor
+            $('#btnGuardar').on('click', function () {
+                var usuario = {
+                    IdUsuario: parseInt($('#IdUsuario').val() || 0),
+                    Nombre: $('#Nombres').val(),
+                    Apellido: $('#Apellidos').val(),
+                    Correo: $('#Correo').val(),
+                    Clave: $('#Clave').val(),
+                    Activo: $('#Activo').val() == '1' ? true : false
+                };
+
+                $.ajax({
+                    url: '@Url.Action("GuardarUsuario","Home")',
+                    method: 'POST',
+                    data: usuario,
+                    success: function (res) {
+                        if (res.success) {
+                            // reload table to get persistent data and ids
+                            tabla.ajax.reload(null, false);
+                            var modalEl = document.getElementById('modalUsuario');
+                            var modal = bootstrap.Modal.getInstance(modalEl);
+                            if (modal) modal.hide();
+                            alert(res.message || 'Operacion realizada correctamente');
+                        } else {
+                            alert(res.message || 'Error al guardar');
+                        }
+                    },
+                    error: function () { alert('Error del servidor'); }
+                });
+            });
+        });
+    </script>
+}

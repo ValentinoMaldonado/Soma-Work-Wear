@@ -1,8 +1,35 @@
-﻿
 @{
-    ViewBag.Title = "Marca";
+    ViewBag.Title = "Marcas";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Marca</h2>
+<section class="admin-page" aria-labelledby="brandTitle">
+    <div class="admin-page-header">
+        <div>
+            <span class="admin-eyebrow">Mantenedor</span>
+            <h1 id="brandTitle">Marcas</h1>
+            <p>Gestiona proveedores, lineas propias y colecciones asociadas al catalogo de indumentaria.</p>
+        </div>
+        <button class="btn btn-glass" type="button">
+            <i class="fas fa-plus me-1"></i> Nueva marca
+        </button>
+    </div>
 
+    <div class="resource-grid">
+        <article class="admin-card resource-card">
+            <i class="fas fa-industry"></i>
+            <h2>Linea industrial</h2>
+            <p>Marcas orientadas a resistencia, refuerzos y alto volumen.</p>
+        </article>
+        <article class="admin-card resource-card">
+            <i class="fas fa-tools"></i>
+            <h2>Linea tecnica</h2>
+            <p>Prendas livianas para movilidad, asistencia y soporte en campo.</p>
+        </article>
+        <article class="admin-card resource-card">
+            <i class="fas fa-building"></i>
+            <h2>Corporativo</h2>
+            <p>Opciones pensadas para identidad visual y presentacion de equipo.</p>
+        </article>
+    </div>
+</section>
